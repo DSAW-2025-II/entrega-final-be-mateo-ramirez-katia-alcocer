@@ -2,11 +2,13 @@
 
 Backend para el proyecto BEWheels, una plataforma de carpooling universitario.
 
-##  Backend Desplegado
+##  URLs de Producción
 
-**URL de Producción:** `https://entrega-final-be-mateo-ramirez-katia.onrender.com`
+**Backend (API):** `https://entrega-final-be-mateo-ramirez-katia.onrender.com`
 
-Usa este dominio en tu frontend para consumir la API en producción.
+**Frontend (Aplicación Web):** `https://entrega-final-fe-mateo-ramirez-kati.vercel.app`
+
+Usa el dominio del backend en tu frontend para consumir la API en producción.
 
 ---
 

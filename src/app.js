@@ -137,7 +137,7 @@ app.get('/', (req, res) => {
                 ✅ Servidor funcionando correctamente
             </div>
             
-            <a href="https://fe-wheels.vercel.app" target="_blank" class="frontend-link">
+            <a href="https://entrega-final-fe-mateo-ramirez-kati.vercel.app" target="_blank" class="frontend-link">
                 🌐 Ir a la Aplicación Web
             </a>
             

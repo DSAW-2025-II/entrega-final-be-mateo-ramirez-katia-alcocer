@@ -5,32 +5,16 @@ export const UsuarioController = {
 
   async registrarUsuario(req, res) {
     if (!req.body) {
-  return res.status(400).json({ error: 'No se recibieron datos del usuario.' });
-}
+      return res.status(400).json({ error: 'No se recibieron datos del usuario.' });
+    }
 
-console.log(' Body recibido:', req.body);
-console.log(' Archivo recibido:', req.file);
-
-    console.log('---- DEBUG MULTER ----');
-  console.log('Headers:', req.headers['content-type']);
-  console.log('Body keys:', req.body ? Object.keys(req.body) : 'req.body es undefined');
-  console.log('File:', req.file);
-  
     try {
-      console.log('--- REGISTRO USUARIO ---');
-      console.log('req.body inicial:', req.body);
-      console.log('req.file:', req.file);
-
-     
       if (!req.body) req.body = {};
 
-     
       if (
         Object.keys(req.body).length === 0 &&
         req.headers['content-type']?.includes('multipart/form-data')
       ) {
-        console.warn(' req.body llegó vacío. Posiblemente no se subió imagen.');
-       
         req.body = {
           nombre: req.body?.nombre || req.body.get?.('nombre'),
           id_universitario: req.body?.id_universitario || req.body.get?.('id_universitario'),
@@ -40,12 +24,10 @@ console.log(' Archivo recibido:', req.file);
         };
       }
 
-     
       if (req.file) {
         req.body.foto_perfil = `/uploads/${req.file.filename}`;
       }
 
-  
       const { error, value } = usuarioSchema.validate(req.body);
       if (error) {
         return res.status(400).json({
@@ -55,7 +37,6 @@ console.log(' Archivo recibido:', req.file);
         });
       }
 
-    
       if (!value.correo) {
         return res.status(400).json({
           error:
@@ -63,11 +44,8 @@ console.log(' Archivo recibido:', req.file);
         });
       }
 
-   
-      console.log('Datos recibidos para registro:', value);
       const nuevoUsuario = await UsuarioService.registrarUsuario(value);
 
-     
       return res.status(201).json({
         message: 'Usuario registrado con éxito',
         usuario: nuevoUsuario
@@ -75,7 +53,6 @@ console.log(' Archivo recibido:', req.file);
     } catch (err) {
       console.error(' Error en registrarUsuario:', err);
 
-     
       let msg = err.message;
       if (msg.includes('correo ya está registrado')) {
         msg = 'El correo ingresado ya está registrado. Por favor usa otro correo institucional.';
@@ -83,7 +60,6 @@ console.log(' Archivo recibido:', req.file);
         msg = 'El ID universitario ingresado ya está registrado. Verifica que sea correcto o usa otro.';
       }
 
-    
       return res.status(400).json({
         error: msg || 'Error al procesar la solicitud.'
       });
@@ -134,25 +110,17 @@ console.log(' Archivo recibido:', req.file);
         return res.status(401).json({ error: 'No autorizado: token inválido' });
       }
 
-   
-      console.log(' req.body completo:', req.body);
-      console.log(' Claves en req.body:', Object.keys(req.body || {}));
-      console.log(' Archivo recibido:', req.file);
-
-      // Construir payload permitido (ignorar correo si viene)
       const input = {
         nombre: req.body?.nombre,
         id_universitario: req.body?.id_universitario,
         telefono: req.body?.telefono,
-        contrasena: req.body?.contrasena, // Incluir contraseña
+        contrasena: req.body?.contrasena
       };
 
-      
       if (req.file) {
         input.foto_perfil = `/uploads/${req.file.filename}`;
       }
 
-     
       const { error, value } = usuarioUpdateSchema.validate(input, { 
         abortEarly: true,
         stripUnknown: true 

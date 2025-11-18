@@ -3,6 +3,12 @@ import { RolService } from './rol.service.js';
 
 export const VehiculoService = {
   async registrarVehiculo(datosVehiculo) {
+    // Verificar límite de 5 vehículos por usuario
+    const vehiculosExistentes = await VehiculoRepository.buscarPorIdUsuario(datosVehiculo.id_usuario);
+    if (vehiculosExistentes.length >= 5) {
+      throw new Error('No puedes registrar más de 5 vehículos. Elimina uno antes de agregar otro.');
+    }
+    
     const vehiculo = await VehiculoRepository.crearVehiculo(datosVehiculo);
     
     // Asignar rol de Conductor automáticamente
